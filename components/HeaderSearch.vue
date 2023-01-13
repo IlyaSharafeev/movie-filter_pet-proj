@@ -1,8 +1,8 @@
 <template>
   <div class="header-search">
     <div class="bar">
-      <input class="searchbar" type="text" title="Search">
-      <a href="#">
+      <input class="searchbar" type="text" title="Search" @input="searchMovie" v-model="test">
+      <a href="#" @click="speech">
         <img
             class="voice"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Google_mic.svg/716px-Google_mic.svg.png"
@@ -15,7 +15,15 @@
 </template>
 
 <script setup>
+import {useMoviesStore} from "../store/movies";
+import {useDebounceFn} from "@vueuse/core";
+import {ref} from "vue";
 
+const movieStore = useMoviesStore();
+const test = ref('');
+const searchMovie = useDebounceFn(() => {
+  movieStore.searchMovies(test.value);
+}, 500)
 </script>
 
 <style scoped lang="scss">
@@ -26,6 +34,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 2;
 
   .bar {
     margin: 0 auto;

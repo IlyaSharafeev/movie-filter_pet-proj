@@ -8,7 +8,17 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@vueuse/core": "^9.10.0",
+    "@vueuse/nuxt": "^9.10.0",
     "nuxt": "3.0.0",
     "sass": "^1.57.1"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.4.6",
+    "axios": "^1.2.2",
+    "bootstrap-vue": "^2.23.1",
+    "pinia": "^2.0.28",
+    "vue": "^3.2.45",
+    "vue-awesome-paginate": "^1.1.46"
   }
 }

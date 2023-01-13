@@ -1,11 +1,15 @@
 <template>
   <div class="container-card inactive">
-    <div class="card">
+    <div class="card" :title="movie.title">
       <div class="card-side card-front">
-        <div class="card-img"></div>
+        <div class="card-img">
+          <img v-if="movie.posterUrlPreview" :src="movie.posterUrlPreview" alt="card img"/>
+          <img v-else src="@/assets/images/error-download-image.png" alt="error download"/>
+        </div>
         <div class="card-info">
-          <h2>title</h2>
-          <p>desk</p>
+          <div class="card-info__title">{{movie.nameRu}}</div>
+          <div class="card-info__description" :title="movie.genres[0].genre">{{movie.genres[0].genre}}</div>
+          <div class="card-info__rating" :title="movie.ratingKinopoisk || movie.rating">{{movie.ratingKinopoisk || movie.rating}}</div>
         </div>
       </div>
     </div>
@@ -13,20 +17,14 @@
 </template>
 
 <script setup>
-// const cards = document.querySelectorAll('.card');
-//
-// function transition() {
-//   if (this.classList.contains('active')) {
-//     this.classList.remove('active')
-//   } else {
-//     this.classList.add('active');
-//   }
-// }
-//
-// cards.forEach(card => card.addEventListener('click', transition));
+defineProps({
+  movie: {default: '', type: Object}
+})
 </script>
 
 <style scoped lang="sass">
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap')
 
 // --------------
 // Global styles
@@ -44,6 +42,10 @@ $d2: #555
 $p1: #FFC324
 $g1: #FFB714
 $g2: #FFE579
+
+// Border
+$border-radius-card: 10px
+
 
 // Mixins
 =size($x, $y)
@@ -109,6 +111,7 @@ svg
   display: inline-block
   +size(100%, 100%)
   cursor: pointer
+  border-radius: $border-radius-card
   -moz-backface-visibility: hidden
   transform-style: preserve-3d
   transform: translateZ(-100px)
@@ -125,6 +128,7 @@ svg
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1.4)
   &:hover
     transform: translateZ(0px)
+    scale: 110%
   &:hover:after
     opacity: 1
 
@@ -133,7 +137,7 @@ svg
     backface-visibility: hidden
     position: absolute
     +size(100%, 100%)
-    border-radius: 5px
+    border-radius: $border-radius-card
     background-color: $l1
 
   .card-front
@@ -142,6 +146,34 @@ svg
   .card-info
     padding: 16px
 
+    .card-info__title
+      font-weight: bold
+      font-size: 18px
+      font-family: 'Maven Pro', sans-serif
+      white-space: nowrap
+      overflow: hidden
+      padding: 0 0 10px 0
+      text-overflow: ellipsis
+
+    .card-info__description
+      position: absolute
+      bottom: 20px
+      font-family: 'Inconsolata', monospace
+      display: -webkit-box
+      -webkit-line-clamp: 2 // количество строк
+      -webkit-box-orient: vertical
+      overflow: hidden
+
+    .card-info__rating
+      position: absolute
+      right: 0
+      bottom: 0
+      background: #794d00
+      color: gainsboro
+      padding: 5px 10px
+      text-transform: uppercase
+      font-weight: bold
+      border-radius: $border-radius-card 0 $border-radius-card 0
 
 
 // --------------
@@ -153,6 +185,11 @@ svg
     background-color: $l2
     background-position: center
     background-size: cover
-    border-radius: 5px 5px 0 0
+    border-radius: $border-radius-card $border-radius-card 0 0
     +size(100%, 250px)
+
+    img
+      border-radius: $border-radius-card $border-radius-card 0 0
+      width: 100%
+      height: 100%
 </style>

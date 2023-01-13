@@ -1,13 +1,13 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <HeaderSearch/>
     <slot/>
   </div>
 </template>
 
 <style scoped>
-.container {
+.wrapper {
   background: #06bdc4;
-  height: 100vh;
+  height: 100%;
 }
 </style>
