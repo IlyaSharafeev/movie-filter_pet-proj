@@ -1,9 +1,10 @@
 import {defineStore} from 'pinia'
 import axios from "axios";
+const config = useRuntimeConfig();
 
 const options = {
     headers: {
-        'X-API-KEY': 'b242907a-9835-41b1-be38-1f69e9ad0449',
+        'X-API-KEY': config.public.VUE_APP_X_API_KEY_MOVIES,
         'Content-Type': 'application/json',
     },
 }
@@ -27,12 +28,14 @@ export const useMoviesStore = defineStore({
                 })
             this.offLoader();
         },
-        searchMovies(string: string) {
-            axios.get(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${string}&page=1`, options)
+        async searchMovies(string: string) {
+            this.onLoader();
+            await axios.get(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${string}&page=1`, options)
                 .then((response) => {
                     this.movies = response.data.films;
                     this.totalPages = response.data.pagesCount;
                 })
+            this.offLoader();
         },
         onLoader() {
             this.loader = true;
