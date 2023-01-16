@@ -1,9 +1,10 @@
 <template>
   <div class="header-search">
     <div class="bar">
-      <input class="searchbar" type="text" title="Search" @input="searchMovie" v-model="test">
-      <a href="#" @click="speech">
+      <input class="searchbar" type="text" title="Search" @input="searchMovie" v-model="transcript">
+      <a href="#">
         <img
+            @click="ToggleMic"
             class="voice"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Google_mic.svg/716px-Google_mic.svg.png"
             title="Search by Voice"
@@ -17,13 +18,72 @@
 <script setup>
 import {useMoviesStore} from "../store/movies";
 import {useDebounceFn} from "@vueuse/core";
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
 
 const movieStore = useMoviesStore();
 const test = ref('');
 const searchMovie = useDebounceFn(() => {
   movieStore.searchMovies(test.value);
 }, 500)
+
+const transcript = ref('')
+const isRecording = ref(false)
+
+const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const sr = new Recognition()
+
+onMounted(() => {
+  sr.continuous = true
+  sr.interimResults = true
+
+  sr.onstart = () => {
+    console.log('SR Started')
+    isRecording.value = true
+  }
+
+  sr.onend = () => {
+    console.log('SR Stopped')
+    isRecording.value = false
+  }
+
+  sr.onresult = (evt) => {
+    for (let i = 0; i < evt.results.length; i++) {
+      const result = evt.results[i]
+
+      if (result.isFinal) CheckForCommand(result)
+    }
+
+    const t = Array.from(evt.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('')
+
+    transcript.value = t
+    console.log(transcript.value);
+  }
+})
+
+const CheckForCommand = (result) => {
+  const t = result[0].transcript;
+  if (t.includes('stop recording')) {
+    sr.stop()
+  } else if (
+      t.includes('what is the time') ||
+      t.includes('what\'s the time')
+  ) {
+    sr.stop()
+    alert(new Date().toLocaleTimeString())
+    setTimeout(() => sr.start(), 100)
+  }
+}
+
+const ToggleMic = () => {
+  if (isRecording.value) {
+    sr.stop()
+  } else {
+    sr.start()
+  }
+}
 </script>
 
 <style scoped lang="scss">

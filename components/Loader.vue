@@ -17,8 +17,8 @@ html, body {
 .spinner {
   animation: rotate 2s linear infinite;
   z-index: 2;
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   position: fixed;
   top:0;
   left:0;

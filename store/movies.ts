@@ -18,17 +18,18 @@ export const useMoviesStore = defineStore({
         }
     },
     actions: {
-        setMovies(page: number = 1) {
-            axios.get(`https://kinopoiskapiunofficial.tech/api/v2.2/films?order=RATING&type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=${page}`, options)
+        async setMovies(page: number = 1) {
+            this.onLoader();
+            await axios.get(`https://kinopoiskapiunofficial.tech/api/v2.2/films?order=RATING&type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=${page}`, options)
                 .then((response) => {
                     this.movies = response.data.items;
                     this.totalPages = response.data.totalPages;
                 })
+            this.offLoader();
         },
         searchMovies(string: string) {
             axios.get(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${string}&page=1`, options)
                 .then((response) => {
-                    console.log(response);
                     this.movies = response.data.films;
                     this.totalPages = response.data.pagesCount;
                 })
