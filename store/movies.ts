@@ -25,8 +25,8 @@ export const useMoviesStore = defineStore({
             this.onLoader();
             await axios.get(`https://kinopoiskapiunofficial.tech/api/v2.2/films?order=RATING&type=ALL&ratingFrom=0&ratingTo=10&yearFrom=1000&yearTo=3000&page=${page}`, options)
                 .then((response) => {
-                    this.movies = response.data.items;
                     this.totalPages = response.data.totalPages;
+                    this.movies = response.data.items;
                 })
                 .catch((error) => {
                     throw createError({ statusCode: 404, statusMessage: error.message })
@@ -39,7 +39,6 @@ export const useMoviesStore = defineStore({
                 .then((response) => {
                     this.movies = response.data.films;
                     this.totalPages = response.data.pagesCount;
-                    console.log(this.movies);
                 })
                 .catch((error) => {
                     throw createError({ statusCode: 404, statusMessage: error.message })

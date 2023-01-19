@@ -1,6 +1,7 @@
 <template>
   <vue-awesome-paginate
-      :total-items="5"
+      v-if="movieStore.getTotalPages"
+      :total-items="movieStore.getTotalPages"
       :items-per-page="1"
       :max-pages-shown="5"
       :on-click="onClickHandler"

@@ -1,6 +1,6 @@
 <template>
   <div class="header-search">
-    <NuxtLink :to="hrefButton" class="btn btn-secondary favorites-btn" @click="movieStore.toggleUnreadMovies(false)">{{textButton}} <span v-if="movieStore.getUnreadSelectedMovies"></span></NuxtLink>
+    <NuxtLink to="/selected-movies" class="btn btn-secondary favorites-btn" @click="movieStore.toggleUnreadMovies(false)">favorite <span v-if="movieStore.getUnreadSelectedMovies"></span></NuxtLink>
     <div class="bar">
       <input class="searchbar" type="text" title="Search" @input="searchMovie" v-model="transcript">
         <img
@@ -35,22 +35,9 @@ const searchMovie = useDebounceFn(() => {
 
 const transcript = ref('')
 const isRecording = ref(false)
-const textButton = ref('favorite');
-const hrefButton = ref('/selected-movies');
 
 watch(transcript, (val) => {
   searchMovie();
-})
-
-onBeforeRouteUpdate((to) => {
-  if(to.path === '/selected-movies') {
-    textButton.value = 'back';
-    hrefButton.value = '/';
-
-  } else {
-    textButton.value = 'favorite'
-    hrefButton.value = '/selected-movies';
-  }
 })
 
 const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -85,7 +72,6 @@ onMounted(() => {
         .join('')
 
     transcript.value = t
-    console.log(transcript.value);
   }
 })
 

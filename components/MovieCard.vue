@@ -8,7 +8,7 @@
         </div>
         <div class="card-info">
           <div class="card-info__title">{{movie.nameRu}}</div>
-          <div class="card-info__description" :title="movie.genres[0].genre">{{movie.genres[0].genre}}</div>
+          <div class="card-info__description" v-if="movie.genres[0]" :title="movie.genres[0].genre">{{movie.genres[0].genre}}</div>
           <div class="card-info__rating" :title="movie.ratingKinopoisk || movie.rating">{{movie.ratingKinopoisk || movie.rating}}</div>
           <div class="card-info__star" v-if="!star" @click="addToFavorites"><Icon name="ic:round-star-outline" style="width: 20px; height: 20px" /></div>
           <div class="card-info__star" v-else @click="removeToFavorites"><Icon  name="ic:round-star" style="width: 20px; height: 20px" /></div>
@@ -44,13 +44,6 @@ const removeToFavorites = () => {
 @import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap')
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap')
 
-// --------------
-// Global styles
-// --------------
-
-*, *:after, *:before
-  box-sizing: border-box
-
 // Color Variables
 $l1: hsla(0, 0%, 100%, 1)
 $l2: hsla(223, 13%, 87%, 1)
@@ -69,11 +62,6 @@ $border-radius-card: 10px
 =size($x, $y)
   width: $x
   height: $y
-
-// Text
-h2, h4, p, ul, li
-  margin: 0
-  padding: 0
 
 h2, h4
   font-family: 'Oswald', sans-serif
@@ -104,12 +92,6 @@ svg
   min-width: 24px
   min-height: 24px
 
-
-
-// --------------
-// Overall card
-// --------------
-
 .container-card
   position: relative
   +size(260px, 400px)
@@ -117,47 +99,22 @@ svg
   min-height: 300px
   margin: 4px
 
-// .active is applied to .card when .card is clicked.
-.active
-  transform: translateZ(0px) rotateY(180deg) !important
-  &:after
-    display: none
-// &:hover:after
-//   opacity: 0 !important
-
 .card
   display: inline-block
   +size(100%, 100%)
   cursor: pointer
   border-radius: $border-radius-card
-  -moz-backface-visibility: hidden
-  transform-style: preserve-3d
-  transform: translateZ(-100px)
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)
-  // :after allows for a more performant box-shadow because only opacity is being animated.
-  &:after
-    content: ''
-    position: absolute
-    z-index: -1
-    +size(100%, 100%)
-    border-radius: 5px
-    box-shadow: 0 14px 50px -4px hsla(0, 0%, 0%, 0.15)
-    opacity: 0
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1.4)
+
   &:hover
-    transform: translateZ(0px)
     scale: 105%
+    box-shadow: 0 0 23px 0 rgba(102,99,102,1)
 
   .card-side
-    -webkit-backface-visibility: hidden
-    backface-visibility: hidden
     position: absolute
     +size(100%, 100%)
     border-radius: $border-radius-card
     background-color: $l1
-
-  .card-front
-    z-index: 2
 
   .card-info
     padding: 16px
@@ -197,9 +154,6 @@ svg
       bottom: 115px
       right: 10px
 
-// --------------
-// Front of card
-// --------------
 
 .card-front
   .card-img
