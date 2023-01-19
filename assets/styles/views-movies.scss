@@ -1,0 +1,17 @@
+.views-movies{
+  padding-top: 100px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.views-movies__pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 40px 20px;
+}

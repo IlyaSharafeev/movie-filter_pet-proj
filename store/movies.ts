@@ -1,10 +1,9 @@
 import {defineStore} from 'pinia'
 import axios from "axios";
-const config = useRuntimeConfig();
 
 const options = {
     headers: {
-        'X-API-KEY': config.public.VUE_APP_X_API_KEY_MOVIES,
+        'X-API-KEY': "b242907a-9835-41b1-be38-1f69e9ad0449",
         'Content-Type': 'application/json',
     },
 }
@@ -13,9 +12,12 @@ export const useMoviesStore = defineStore({
     id: 'movies-store',
     state: () => {
         return {
-            movies: false,
+            movies: [],
             totalPages: null,
             loader: false,
+            selectedMovies: [],
+            selectedMode: false,
+            unreadSelectedMovies: false,
         }
     },
     actions: {
@@ -26,6 +28,9 @@ export const useMoviesStore = defineStore({
                     this.movies = response.data.items;
                     this.totalPages = response.data.totalPages;
                 })
+                .catch((error) => {
+                    throw createError({ statusCode: 404, statusMessage: error.message })
+                })
             this.offLoader();
         },
         async searchMovies(string: string) {
@@ -34,19 +39,47 @@ export const useMoviesStore = defineStore({
                 .then((response) => {
                     this.movies = response.data.films;
                     this.totalPages = response.data.pagesCount;
+                    console.log(this.movies);
+                })
+                .catch((error) => {
+                    throw createError({ statusCode: 404, statusMessage: error.message })
                 })
             this.offLoader();
+        },
+        addMovieToFavorites(newMovieId: number) {
+            const selectedMovie = this.movies.filter((element) => {
+                return element.kinopoiskId === newMovieId;
+            })
+            selectedMovie[0].star = false;
+            this.selectedMovies.push(selectedMovie[0]);
+            const index = this.movies.findIndex(n => n.kinopoiskId === newMovieId);
+            if (index !== -1) {
+                this.movies.splice(index, 1);
+            }
+        },
+        removeToFavorites(movieId: number) {
+            const movieToAdd = this.selectedMovies.find(n => n.kinopoiskId === movieId);
+            this.movies.unshift(movieToAdd);
+            const index = this.selectedMovies.findIndex(n => n.kinopoiskId === movieId);
+            if (index !== -1) {
+                this.selectedMovies.splice(index, 1);
+            }
         },
         onLoader() {
             this.loader = true;
         },
         offLoader() {
             this.loader = false;
-        }
+        },
+        toggleUnreadMovies(flag: boolean) {
+            this.unreadSelectedMovies = flag;
+        },
     },
     getters: {
         getMovies: state => state.movies,
+        getMoviesSelected: state => state.selectedMovies,
         getTotalPages: state => state.totalPages,
         getStateLoader: state => state.loader,
+        getUnreadSelectedMovies: state => state.unreadSelectedMovies,
     },
 })

@@ -10,6 +10,8 @@
           <div class="card-info__title">{{movie.nameRu}}</div>
           <div class="card-info__description" :title="movie.genres[0].genre">{{movie.genres[0].genre}}</div>
           <div class="card-info__rating" :title="movie.ratingKinopoisk || movie.rating">{{movie.ratingKinopoisk || movie.rating}}</div>
+          <div class="card-info__star" v-if="!star" @click="addToFavorites"><Icon name="ic:round-star-outline" style="width: 20px; height: 20px" /></div>
+          <div class="card-info__star" v-else @click="removeToFavorites"><Icon  name="ic:round-star" style="width: 20px; height: 20px" /></div>
         </div>
       </div>
     </div>
@@ -17,9 +19,25 @@
 </template>
 
 <script setup>
-defineProps({
-  movie: {default: '', type: Object}
+import {onMounted, ref} from "vue";
+import {useMoviesStore} from "../store/movies";
+
+const props = defineProps({
+  movie: {default: '', type: Object},
+  star: {default: false, type: Boolean},
 })
+
+const movieStore = useMoviesStore();
+
+
+const addToFavorites = () => {
+  movieStore.addMovieToFavorites(props.movie.kinopoiskId);
+  movieStore.toggleUnreadMovies(true);
+}
+
+const removeToFavorites = () => {
+  movieStore.removeToFavorites(props.movie.kinopoiskId)
+}
 </script>
 
 <style scoped lang="sass">
@@ -128,9 +146,7 @@ svg
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1.4)
   &:hover
     transform: translateZ(0px)
-    scale: 110%
-  &:hover:after
-    opacity: 1
+    scale: 105%
 
   .card-side
     -webkit-backface-visibility: hidden
@@ -154,6 +170,7 @@ svg
       overflow: hidden
       padding: 0 0 10px 0
       text-overflow: ellipsis
+      max-width: 190px
 
     .card-info__description
       position: absolute
@@ -175,6 +192,10 @@ svg
       font-weight: bold
       border-radius: $border-radius-card 0 $border-radius-card 0
 
+    .card-info__star
+      position: absolute
+      bottom: 115px
+      right: 10px
 
 // --------------
 // Front of card

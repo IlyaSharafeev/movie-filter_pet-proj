@@ -1,5 +1,6 @@
 <template>
   <div class="header-search">
+    <NuxtLink :to="hrefButton" class="btn btn-secondary favorites-btn" @click="movieStore.toggleUnreadMovies(false)">{{textButton}} <span v-if="movieStore.getUnreadSelectedMovies"></span></NuxtLink>
     <div class="bar">
       <input class="searchbar" type="text" title="Search" @input="searchMovie" v-model="transcript">
         <img
@@ -25,6 +26,7 @@
 import {useMoviesStore} from "../store/movies";
 import {useDebounceFn} from "@vueuse/core";
 import {ref, onMounted, watch} from "vue";
+import {onBeforeRouteUpdate} from "nuxt/app";
 
 const movieStore = useMoviesStore();
 const searchMovie = useDebounceFn(() => {
@@ -33,12 +35,26 @@ const searchMovie = useDebounceFn(() => {
 
 const transcript = ref('')
 const isRecording = ref(false)
+const textButton = ref('favorite');
+const hrefButton = ref('/selected-movies');
 
 watch(transcript, (val) => {
   searchMovie();
 })
 
+onBeforeRouteUpdate((to) => {
+  if(to.path === '/selected-movies') {
+    textButton.value = 'back';
+    hrefButton.value = '/';
+
+  } else {
+    textButton.value = 'favorite'
+    hrefButton.value = '/selected-movies';
+  }
+})
+
 const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+
 const sr = new Recognition()
 
 onMounted(() => {
@@ -99,6 +115,22 @@ const ToggleMic = () => {
 <style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
 
+.favorites-btn {
+  text-transform: uppercase;
+  font-family: 'Comfortaa', cursive;
+  letter-spacing: 5px;
+  position: relative;
+
+  span {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    padding: 5px;
+    border-radius: 50%;
+  }
+}
+
 .header-search {
   width: 100%;
   height: auto;
@@ -106,7 +138,7 @@ const ToggleMic = () => {
   background: #007c83;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   position: fixed;
   top: 0;
