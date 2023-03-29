@@ -7,3 +7,31 @@ A
 package-lock.json,f\a\fa288d1472d29beccb489a676f68739ad365fc47
 <
 package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a
+I
+assets/styles/_reset.scss,c\2\c28c9ec1cbaac71cb63a233801f37321fd2daf97
+@
+layouts/home.vue,6\a\6a76d5fddee2a3e00636034b277e0a122d830e1a
+O
+assets/styles/views-movies.scss,a\1\a1341149191690f59567171808b71329a1bfc5ca
+4
+.env,3\c\3c84dcdc6bbe3d7817c49dcdc327b926fea1808a
+O
+plugins/vue-awesome-paginate.ts,7\1\715a391474d0bd96c17ccc26debeec0427bdfb64
+w
+G.idea/sonarlint/issuestore/7/0/7030d0b2f71b999ff89a343de08c414af32fc93a,9\d\9d19eaab4327edc07435a682d68ef383811840e5
+w
+G.idea/sonarlint/issuestore/f/a/fa288d1472d29beccb489a676f68739ad365fc47,c\d\cdb55fb7b9550cf1c93c03e68dfe3882647e90dc
+K
+components/HeaderSearch.vue,a\c\ac0fa57ee881607f13ba297e756d53f50fdf82e3
+?
+pages/index.vue,f\f\ff87ee14320f4d3dd6a94ef6dde25ffe0b16242a
+?
+store/movies.ts,c\a\cadc906a6cc575dc8478e1bc3769a387f59dd90a
+H
+components/Paginator.vue,f\d\fd4d4c3301cdaf7b7457a8c07aacdf6cc457d871
+>
+nuxt.config.ts,e\4\e44500e8e3ef8f6dba8f3d3501f7d772d94a973c
+H
+components/MovieCard.vue,8\2\8228ddd59e556a52a8a6c77ba6331e22dea186b0
+I
+pages/selected-movies.vue,6\0\60aaa5b1194254b669a3f0608bd4a7f2fd997bb4
